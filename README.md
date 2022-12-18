@@ -10,6 +10,7 @@ This script is a Reddit bot that uses the OpenAI API to generate responses to co
 - `rich` library: `pip install rich`
 - `tqdm` library: `pip install tqdm`
 - `dotenv` library: `pip install python-dotenv`
+- Install requirements: `pip install -r requirements.txt`
 
 ## Setup
 1. Register for a Reddit account and create a Reddit app at https://www.reddit.com/prefs/apps
@@ -20,7 +21,6 @@ This script is a Reddit bot that uses the OpenAI API to generate responses to co
 6. Register for an OpenAI API key at https://beta.openai.com/signup/
 7. Set the value for the `OPENAI_API_KEY` environment variable to your OpenAI API key.
 8. Rename `copy.env` to `.env`.
-9. Install requirements: `pip install -r requirements.txt`
 
 ## Usage
 1. Run the script using python reddit-sphinx.py
