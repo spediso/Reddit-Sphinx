@@ -87,10 +87,13 @@ logger.info("Bot's past comments and submissions added to commented_ids set")
 
 # Uses AI to reply to comments and submissions
 def prompt(comment, submission, pbar=None):
-    # Ask user if they want to reply to the comment or submission
+    # ask user which model to use
+    model = Prompt.ask("Which model do you want to use?", choices=["davinci", "curie", "babbage", "ada"], default="davinci")
+    # Ask user for custom prompt
+    custom_prompt = Prompt.ask("How would you like the model to reply to this comment/submission?", default="Reply to the following directly and as an expert in under 50 words:")
+    # Ask user if they want to reply to the comment/submission
     response = Prompt.ask("Do you want to reply to this comment/submission?", choices=["y", "n"])
     # clear the console
-    pbar.clear()
     if response == "y":
         # Get the text of the comment or submission
         try:
@@ -101,8 +104,8 @@ def prompt(comment, submission, pbar=None):
         logger.info("Generating response to:" + text)
         # Generate a response using OpenAI
         response = openai.Completion.create(
-            engine="davinci",
-            prompt="Reply to the following directly and as an expert in under 50 words:" + text + "Reply:",
+            engine=model,
+            prompt=custom_prompt + text + "Reply:",
             max_tokens=50,
             temperature=0.5,
             top_p=1,
@@ -205,13 +208,25 @@ def main():
             # Convert the start and end timestamps to human-readable strings
             start_time_str = datetime.datetime.fromtimestamp(start_time).strftime('%Y-%m-%d %H:%M:%S')
             end_time_str = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
-            # clear the console
-            os.system("cls" if os.name == "nt" else "clear")
-            # Print "Shutting down..." and the number of comments and submissions seen, replied to, and the start and end time
-            pprint(f"Shutting down... Comments and submissions seen: {len(seen_ids)} Comments and submissions replied to: {len(commented_ids)} Start time: {start_time_str} End time: {end_time_str} Elapsed time: {time.time() - start_time}")
-            # Exit the program
+            # Calculate the elapsed time
+            elapsed_time = time.time() - start_time
+            # Convert the elapsed time to a timedelta object
+            elapsed_time_delta = datetime.timedelta(seconds=elapsed_time)
+            # Convert the timedelta object to a number of seconds
+            elapsed_time_seconds = elapsed_time_delta.total_seconds()
+            # Convert the elapsed time to a datetime object
+            elapsed_time_datetime = datetime.datetime.fromtimestamp(elapsed_time_seconds)
+            # Convert the timedelta object to a human-readable string
+            elapsed_time_str = elapsed_time_datetime.strftime('%H:%M:%S')
+            # log that the program is exiting
             logger.info("Exiting program")
-            sys.exit()
+            # Exit the program and delete last line
+            sys.exit(print(f"Shutting down...\n"
+            f"  Comments and submissions seen: {len(seen_ids):>5}\n"
+            f"  Comments and submissions replied to: {len(commented_ids):>5}\n"
+            f"  Start time: {start_time_str:<25}\n"
+            f"  End time: {end_time_str:<25}\n"
+            f"  Elapsed time: {elapsed_time_str:<25}"))
         else:
             # clear the console
             os.system("cls" if os.name == "nt" else "clear")
