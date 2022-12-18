@@ -143,7 +143,7 @@ def stream_data(subreddit_name, keyword):
     # Get the subreddit object
     subreddit = reddit.subreddit(subreddit_name)
     # Initialize a tqdm object
-    pbar = tqdm(total=None, desc=f"\033[32mMonitoring /r/\033[33m{subreddit_name}\033[32m for '\033[33m{keyword}\033[32m'\033[0m", ncols=100, bar_format='\033[32m{desc}\033[0m \033[31m|\033[0m \033[32m[Processed comments and posts: \033[33m{n_fmt}\033[32m]\033[0m \033[31m|\033[0m \033[32m[Elapsed: \033[33m{elapsed}\033[32m]\033[0m \033[31m|\033[0m \033[32m[Rate:\033[33m{rate_fmt}\033[32m{postfix}]\033[0m')
+    pbar = tqdm(total=None, desc=f"\033[34mMonitoring /r/\033[95m{subreddit_name}\033[34m for '\033[95m{keyword}\033[34m'\033[0m", ncols=100, bar_format='\033[34m{desc}\033[0m \033[96m|\033[0m \033[34m\033[96m[\033[34mProcessed comments and posts: \033[95m{n_fmt}\033[34m\033[96m]\033[0m \033[96m|\033[0m \033[34m\033[96m[\033[34mElapsed: \033[95m{elapsed}\033[34m\033[96m]\033[0m \033[96m|\033[0m \033[34m\033[96m[\033[34mRate:\033[95m{rate_fmt}\033[34m\033[96m{postfix}\033[96m]\033[0m')
     # Iterate over the stream of submissions in the subreddit
     for submission in subreddit.stream.submissions():
         # Update tqdm to increase the progress bar
