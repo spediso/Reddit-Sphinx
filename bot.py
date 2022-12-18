@@ -45,13 +45,26 @@ logger.info("Reddit authenticated")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 logger.info("OpenAI authenticated")
 
+# start time
+start_time = time.time()
+# initial prompts
+# clear the console
+os.system("cls" if os.name == "nt" else "clear")
+# Ask user for subreddit
+subreddit_name = Prompt.ask("[green]What subreddit do you want to monitor?[/green]",default="all")
+# clear the console
+os.system("cls" if os.name == "nt" else "clear")
+# Ask user for keyword 
+keyword = Prompt.ask("[green]What keyword do you want to monitor?[/green]",default="kangaroo")
+# clear the console
+os.system("cls" if os.name == "nt" else "clear")
+
 # set of ids of comments that have been replied to updated with tqdm
 commented_ids = set()
 logger.info("Commented_ids set created")
 #set of ids of seen comments updated with tqdm
 seen_ids = set()
 logger.info("Seen_ids set created")
-
 
 # Get the bot's user object
 bot_user = reddit.user.me()
@@ -61,17 +74,18 @@ bot_comments = list(bot_user.comments.new())
 bot_submissions = list(bot_user.submissions.new())
 # Iterate over the bot's past comments update tqdm
 if bot_comments:
-    for comment in tqdm(bot_comments, desc="Getting bot's past comments"):
+    for comment in bot_comments:
         # Add the comment ID to the commented_ids set
         commented_ids.add(comment.id)
 # Iterate over the bot's past submissions update tqdm
 if bot_submissions:
-    for submission in tqdm(bot_submissions, desc="Getting bot's past submissions"):
+    for submission in bot_submissions:
         # Add the submission ID to the commented_ids set
         commented_ids.add(submission.id)
 # log that the bot's past comments and submissions have been added to the commented_ids set
 logger.info("Bot's past comments and submissions added to commented_ids set")
-# Ask user if they want to reply to comments or submissions update tqdm
+
+# Uses AI to reply to comments and submissions
 def prompt(comment, submission, pbar=None):
     # Ask user if they want to reply to the comment or submission
     response = Prompt.ask("Do you want to reply to this comment/submission?", choices=["y", "n"])
@@ -174,20 +188,6 @@ def stream_data(subreddit_name, keyword):
                     return
     # Close the tqdm object
     pbar.close()
-
-# start time
-start_time = time.time()
-# initial prompts
-# clear the console
-os.system("cls" if os.name == "nt" else "clear")
-# Ask user for subreddit
-subreddit_name = Prompt.ask("[green]What subreddit do you want to monitor?[/green]",default="all")
-# clear the console
-os.system("cls" if os.name == "nt" else "clear")
-# Ask user for keyword 
-keyword = Prompt.ask("[green]What keyword do you want to monitor?[/green]",default="kangaroo")
-# clear the console
-os.system("cls" if os.name == "nt" else "clear")
 
 # Run the bot on a loop
 def main():
