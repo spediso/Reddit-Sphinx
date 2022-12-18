@@ -22,7 +22,7 @@ This script is a Reddit bot that uses the OpenAI API to generate responses to co
 8. Rename copy.env to .env.
 
 ## Usage
-1. Run the script using python script.py
+1. Run the script using python reddit-sphinx.py
 2. The bot will authenticate with Reddit and OpenAI.
 3. The user will be prompted to choose which model to use from a list of options (davinci, curie, babbage, ada).
 4. The user will be prompted to enter a custom prompt for the model to respond to the comment or submission.
