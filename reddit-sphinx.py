@@ -9,7 +9,6 @@ from rich.pretty import pprint
 from rich.console import Console
 from rich.prompt import Prompt
 from tqdm import tqdm
-import os
 import sys
 from dotenv import load_dotenv
 
