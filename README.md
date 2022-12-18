@@ -19,8 +19,8 @@ This script is a Reddit bot that uses the OpenAI API to generate responses to co
 5. Set the value for the `PRAW_PASSWORD` environment variable to your Reddit password.
 6. Register for an OpenAI API key at https://beta.openai.com/signup/
 7. Set the value for the `OPENAI_API_KEY` environment variable to your OpenAI API key.
+8. Rename copy.env to .env.
 
-## Usage
 ## Usage
 1. Run the script using python script.py
 2. The bot will authenticate with Reddit and OpenAI.
