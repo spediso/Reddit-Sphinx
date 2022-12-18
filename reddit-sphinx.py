@@ -19,8 +19,10 @@ load_dotenv()
 # set up logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-# create a file handler
-handler = logging.FileHandler('bot.log', encoding='utf-8')
+# Get the directory of the script file
+script_dir = os.path.dirname(os.path.abspath(__file__))
+# Set up the file handler to log to a file in the script directory
+handler = logging.FileHandler(os.path.join(script_dir, 'bot.log'), encoding='utf-8')
 handler.setLevel(logging.INFO)
 # create a logging format
 formatter = logging.Formatter(
@@ -232,8 +234,8 @@ def main():
             elapsed_time_str = elapsed_time_datetime.strftime('%H:%M:%S')
             # log that the program is exiting
             logger.info("Exiting program")
-            #clear the last line
-            sys.stdout.write("\033[F")
+            #clear the console
+            os.system("cls" if os.name == "nt" else "clear")
             # Exit the program
             sys.exit(print(f"Shutting down...\n"
                            f"  Comments and submissions seen: {len(seen_ids):>5}\n"
