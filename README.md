@@ -1,4 +1,4 @@
-# Reddit bot using OpenAI
+# Reddit-Sphinx
 
 ## Introduction
 This script is a Reddit bot that uses the OpenAI API to generate responses to comments and submissions on Reddit. The bot will authenticate with both Reddit and OpenAI, and then ask the user if they want to reply to any comments or submissions that it comes across. If the user selects yes, the bot will generate a response using OpenAI and post it as a reply on Reddit.
