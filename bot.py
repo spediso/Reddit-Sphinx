@@ -23,7 +23,8 @@ logger.setLevel(logging.INFO)
 handler = logging.FileHandler('bot.log', encoding='utf-8')
 handler.setLevel(logging.INFO)
 # create a logging format
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 # add the handlers to the logger
 logger.addHandler(handler)
@@ -51,18 +52,20 @@ start_time = time.time()
 # clear the console
 os.system("cls" if os.name == "nt" else "clear")
 # Ask user for subreddit
-subreddit_name = Prompt.ask("[green]What subreddit do you want to monitor?[/green]",default="all")
+subreddit_name = Prompt.ask(
+    "[green]What subreddit do you want to monitor?[/green]", default="all")
 # clear the console
 os.system("cls" if os.name == "nt" else "clear")
-# Ask user for keyword 
-keyword = Prompt.ask("[green]What keyword do you want to monitor?[/green]",default="kangaroo")
+# Ask user for keyword
+keyword = Prompt.ask(
+    "[green]What keyword do you want to monitor?[/green]", default="kangaroo")
 # clear the console
 os.system("cls" if os.name == "nt" else "clear")
 
 # set of ids of comments that have been replied to updated with tqdm
 commented_ids = set()
 logger.info("Commented_ids set created")
-#set of ids of seen comments updated with tqdm
+# set of ids of seen comments updated with tqdm
 seen_ids = set()
 logger.info("Seen_ids set created")
 
@@ -88,11 +91,14 @@ logger.info("Bot's past comments and submissions added to commented_ids set")
 # Uses AI to reply to comments and submissions
 def prompt(comment, submission, pbar=None):
     # ask user which model to use
-    model = Prompt.ask("Which model do you want to use?", choices=["davinci", "curie", "babbage", "ada"], default="davinci")
+    model = Prompt.ask("Which model do you want to use?", choices=[
+                       "davinci", "curie", "babbage", "ada"], default="davinci")
     # Ask user for custom prompt
-    custom_prompt = Prompt.ask("How would you like the model to reply to this comment/submission?", default="Reply to the following directly and as an expert in under 50 words:")
+    custom_prompt = Prompt.ask("How would you like the model to reply to this comment/submission?",
+                               default="Reply to the following directly and as an expert in under 50 words:")
     # Ask user if they want to reply to the comment/submission
-    response = Prompt.ask("Do you want to reply to this comment/submission?", choices=["y", "n"])
+    response = Prompt.ask(
+        "Do you want to reply to this comment/submission?", choices=["y", "n"])
     # clear the console
     if response == "y":
         # Get the text of the comment or submission
@@ -156,11 +162,13 @@ def prompt(comment, submission, pbar=None):
             # end the function
             return
 
+# Stream comments and submissions
 def stream_data(subreddit_name, keyword):
     # Get the subreddit object
     subreddit = reddit.subreddit(subreddit_name)
     # Initialize a tqdm object
-    pbar = tqdm(total=None, desc=f"\033[34mMonitoring /r/\033[95m{subreddit_name}\033[34m for '\033[95m{keyword}\033[34m'\033[0m", ncols=100, bar_format='\033[34m{desc}\033[0m \033[96m|\033[0m \033[34m\033[96m[\033[34mProcessed comments and posts: \033[95m{n_fmt}\033[34m\033[96m]\033[0m \033[96m|\033[0m \033[34m\033[96m[\033[34mElapsed: \033[95m{elapsed}\033[34m\033[96m]\033[0m \033[96m|\033[0m \033[34m\033[96m[\033[34mRate:\033[95m{rate_fmt}\033[34m\033[96m{postfix}\033[96m]\033[0m')
+    pbar = tqdm(total=None, desc=f"\033[34mMonitoring /r/\033[95m{subreddit_name}\033[34m for '\033[95m{keyword}\033[34m'\033[0m", ncols=100,
+                bar_format='\033[34m{desc}\033[0m \033[96m|\033[0m \033[34m\033[96m[\033[34mProcessed comments and posts: \033[95m{n_fmt}\033[34m\033[96m]\033[0m \033[96m|\033[0m \033[34m\033[96m[\033[34mElapsed: \033[95m{elapsed}\033[34m\033[96m]\033[0m \033[96m|\033[0m \033[34m\033[96m[\033[34mRate:\033[95m{rate_fmt}\033[34m\033[96m{postfix}\033[96m]\033[0m')
     # Iterate over the stream of submissions in the subreddit
     for submission in subreddit.stream.submissions():
         # Update tqdm to increase the progress bar
@@ -183,6 +191,7 @@ def stream_data(subreddit_name, keyword):
             if isinstance(comment, Comment):
                 if keyword in comment.body and comment.id not in commented_ids:
                     # Print the comment body
+                    pbar.write(comment.body)
                     # Reply to the comment
                     prompt(comment, None)
                     # Close the tqdm object
@@ -206,8 +215,10 @@ def main():
         response = Prompt.ask("Do you want to exit? ", choices=["y", "n"])
         if response == "y":
             # Convert the start and end timestamps to human-readable strings
-            start_time_str = datetime.datetime.fromtimestamp(start_time).strftime('%Y-%m-%d %H:%M:%S')
-            end_time_str = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+            start_time_str = datetime.datetime.fromtimestamp(
+                start_time).strftime('%Y-%m-%d %H:%M:%S')
+            end_time_str = datetime.datetime.fromtimestamp(
+                time.time()).strftime('%Y-%m-%d %H:%M:%S')
             # Calculate the elapsed time
             elapsed_time = time.time() - start_time
             # Convert the elapsed time to a timedelta object
@@ -215,22 +226,27 @@ def main():
             # Convert the timedelta object to a number of seconds
             elapsed_time_seconds = elapsed_time_delta.total_seconds()
             # Convert the elapsed time to a datetime object
-            elapsed_time_datetime = datetime.datetime.fromtimestamp(elapsed_time_seconds)
+            elapsed_time_datetime = datetime.datetime.fromtimestamp(
+                elapsed_time_seconds)
             # Convert the timedelta object to a human-readable string
             elapsed_time_str = elapsed_time_datetime.strftime('%H:%M:%S')
             # log that the program is exiting
             logger.info("Exiting program")
-            # Exit the program and delete last line
+            #clear the last line
+            sys.stdout.write("\033[F")
+            # Exit the program
             sys.exit(print(f"Shutting down...\n"
-            f"  Comments and submissions seen: {len(seen_ids):>5}\n"
-            f"  Comments and submissions replied to: {len(commented_ids):>5}\n"
-            f"  Start time: {start_time_str:<25}\n"
-            f"  End time: {end_time_str:<25}\n"
-            f"  Elapsed time: {elapsed_time_str:<25}"))
+                           f"  Comments and submissions seen: {len(seen_ids):>5}\n"
+                           f"  Comments and submissions replied to: {len(commented_ids):>5}\n"
+                           f"  Start time: {start_time_str:<25}\n"
+                           f"  End time: {end_time_str:<25}\n"
+                           f"  Elapsed time: {elapsed_time_str:<25}"))
         else:
             # clear the console
             os.system("cls" if os.name == "nt" else "clear")
             # Run the bot on a loop
             main()
+
+
 if __name__ == "__main__":
     main()
