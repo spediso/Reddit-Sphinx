@@ -1,2 +1,5 @@
-#.gitignore example
-.env
+*
+!bot.py
+!copy.py
+!readme.txt
+!.gitignore
