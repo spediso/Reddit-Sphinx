@@ -5,7 +5,6 @@ import os
 import time
 import datetime
 import logging
-from rich.pretty import pprint
 from rich.console import Console
 from rich.prompt import Prompt
 from tqdm import tqdm
@@ -21,7 +20,8 @@ logger.setLevel(logging.INFO)
 # Get the directory of the script file
 script_dir = os.path.dirname(os.path.abspath(__file__))
 # Set up the file handler to log to a file in the script directory
-handler = logging.FileHandler(os.path.join(script_dir, 'bot.log'), encoding='utf-8')
+handler = logging.FileHandler(os.path.join(
+    script_dir, 'bot.log'), encoding='utf-8')
 handler.setLevel(logging.INFO)
 # create a logging format
 formatter = logging.Formatter(
@@ -90,6 +90,8 @@ if bot_submissions:
 logger.info("Bot's past comments and submissions added to commented_ids set")
 
 # Uses AI to reply to comments and submissions
+
+
 def prompt(comment, submission, pbar=None):
     # ask user which model to use
     model = Prompt.ask("Which model do you want to use?", choices=[
@@ -164,6 +166,8 @@ def prompt(comment, submission, pbar=None):
             return
 
 # Stream comments and submissions
+
+
 def stream_data(subreddit_name, keyword):
     # Get the subreddit object
     subreddit = reddit.subreddit(subreddit_name)
@@ -203,6 +207,8 @@ def stream_data(subreddit_name, keyword):
     pbar.close()
 
 # Run the bot on a loop
+
+
 def main():
     try:
         while True:
@@ -233,7 +239,7 @@ def main():
             elapsed_time_str = elapsed_time_datetime.strftime('%H:%M:%S')
             # log that the program is exiting
             logger.info("Exiting program")
-            #clear the console
+            # clear the console
             os.system("cls" if os.name == "nt" else "clear")
             # Exit the program
             sys.exit(print(f"Shutting down...\n"
