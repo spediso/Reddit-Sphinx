@@ -5,11 +5,6 @@ This script is a Reddit bot that uses the OpenAI API to generate responses to co
 
 ## Requirements
 - Python 3.7 or later
-- `praw` library: `pip install praw`
-- `openai` library: `pip install openai`
-- `rich` library: `pip install rich`
-- `tqdm` library: `pip install tqdm`
-- `dotenv` library: `pip install python-dotenv`
 - Install requirements: `pip install -r requirements.txt`
 
 ## Setup
